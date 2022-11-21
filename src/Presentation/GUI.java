@@ -7,6 +7,7 @@ import Business.Patients;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class GUI extends JFrame {
@@ -45,7 +46,10 @@ public class GUI extends JFrame {
         //When button is pressed it displays the found patient in Jlist
         searchPatients.addActionListener(e -> findPatient());
         //When button is pressed a request is added to the database using patient details
-        confirmPatient.addActionListener(e -> PatientDetails());
+        confirmPatient.addActionListener(e -> {
+            PatientDetails();
+            confirmPatient.setEnabled(false);
+        });
 
         //When button is pressed it records the incident and updates the request list
         confirmCalloutDetailsButton.addActionListener(e -> {
@@ -72,6 +76,10 @@ public class GUI extends JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 if (requestList.getSelectedValue() != null) {
                     String number = requestList.getSelectedValue().toString().split(" ")[7].trim();
+                    String[] patientInfo = patients.getPatientDetails(number).split(" , ");
+                    String patient = "NHS Number: " + patientInfo[0] + "\nName: " + patientInfo[1] + " " + patientInfo[2]
+                            + "\nAddress: " + patientInfo[3] + " , " + patientInfo[4] + "\nMedCondition: " + patientInfo[5];
+                    JOptionPane.showMessageDialog(orginisationPane, patient);
                     calloutnhsNumber.setText(number);
                 } else {
                     calloutnhsNumber.setText("");
