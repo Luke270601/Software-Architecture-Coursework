@@ -1,13 +1,12 @@
-package Presentation;
+package com.lukescott.kwikmedical.Presentation;
 
-import Business.Hospitals;
-import Business.Incidents;
-import Business.Patients;
+import com.lukescott.kwikmedical.Business.Incidents;
+import com.lukescott.kwikmedical.Business.Hospitals;
+import com.lukescott.kwikmedical.Business.Patients;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.lang.reflect.Array;
 import java.util.List;
 
 public class GUI extends JFrame {

@@ -1,10 +1,9 @@
-package Data;
+package com.lukescott.kwikmedical.Data;
 
-import Business.Incidents;
-import Business.Patients;
+import com.lukescott.kwikmedical.Business.Incidents;
+import com.lukescott.kwikmedical.Business.Patients;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;

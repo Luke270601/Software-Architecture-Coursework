@@ -1,7 +1,7 @@
-package Data;
+package com.lukescott.kwikmedical.Data;
 
-import Business.Hospitals;
-import Business.Patients;
+import com.lukescott.kwikmedical.Business.Hospitals;
+import com.lukescott.kwikmedical.Business.Patients;
 
 import java.sql.*;
 import java.util.ArrayList;

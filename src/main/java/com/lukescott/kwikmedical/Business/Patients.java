@@ -1,7 +1,7 @@
-package Business;
+package com.lukescott.kwikmedical.Business;
 
-import Data.InsertDB;
-import Data.QueryDB;
+import com.lukescott.kwikmedical.Data.InsertDB;
+import com.lukescott.kwikmedical.Data.QueryDB;
 
 import java.util.ArrayList;
 

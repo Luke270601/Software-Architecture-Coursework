@@ -1,10 +1,6 @@
-package Tests;
-
-import Business.Patients;
+import com.lukescott.kwikmedical.Business.Patients;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PatientsTest {
 

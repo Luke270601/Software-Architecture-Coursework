@@ -30,6 +30,14 @@ CREATE TABLE `kwikmedical`.`regional hospitals`
     PRIMARY KEY (`Hospital Id`)
 ) ENGINE = MyISAM;
 
+CREATE TABLE `kwikmedical`.`ambulance request` (
+`Request ID` INT(4) NOT NULL AUTO_INCREMENT ,
+`Hospital ID` INT(4) NOT NULL ,
+`NHS Number` VARCHAR(10) NOT NULL ,
+PRIMARY KEY (`Request ID`),
+UNIQUE (`NHS Number`)) ENGINE = MyISAM;
+
+
 ALTER TABLE `ambulance request` CHANGE `Request ID` `Request ID` INT(11) NOT NULL AUTO_INCREMENT;
 
 INSERT INTO `patient records` (`NHSNumber`, `First Name`, `Last Name`, `Address`, `Postcode`, `MedCondition`)

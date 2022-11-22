@@ -1,13 +1,8 @@
-package Tests;
-
-import Business.Hospitals;
+import com.lukescott.kwikmedical.Business.Hospitals;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class HospitalsTest {
 

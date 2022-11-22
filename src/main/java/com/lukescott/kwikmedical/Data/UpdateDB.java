@@ -1,4 +1,4 @@
-package Data;
+package com.lukescott.kwikmedical.Data;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
