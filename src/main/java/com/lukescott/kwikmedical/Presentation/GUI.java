@@ -162,6 +162,9 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(orginisationPane, "Sending data to " + hospitals.getName());
             patientModel.clear();
             nhsNumber.setText("");
+            firstLastName.setText("");
+            address.setText("");
+            medCondition.setText("");
         } else {
             JOptionPane.showMessageDialog(orginisationPane, "Request already made for patient");
         }
@@ -201,6 +204,9 @@ public class GUI extends JFrame {
                             address.getText().split(" , ")[0], address.getText().split(" , ")[1], medCondition.getText());
                     if (patients.addPatient(patientInfo)) {
                         JOptionPane.showMessageDialog(orginisationPane, "Patient successfully added to database");
+                        firstLastName.setText("");
+                        address.setText("");
+                        medCondition.setText("");
                         confirmPatient.setEnabled(false);
                     }
                 } else {
