@@ -33,6 +33,7 @@ public class GUI extends JFrame {
     private JTextField address;
     private JTextField medCondition;
     private JTextField firstLastName;
+    private JTextField calloutMedCondition;
 
 
     Hospitals hospitals = new Hospitals(0, "", "", "");
@@ -79,7 +80,10 @@ public class GUI extends JFrame {
                     String patient = "NHS Number: " + patientInfo[0] + "\nName: " + patientInfo[1] + " " + patientInfo[2]
                             + "\nAddress: " + patientInfo[3] + " , " + patientInfo[4] + "\nMedCondition: " + patientInfo[5];
                     JOptionPane.showMessageDialog(orginisationPane, patient);
+                    patients.setNhsNumber(patientInfo[0]);
+                    patients.setMedCondition(patientInfo[5]);
                     calloutnhsNumber.setText(number);
+                    calloutMedCondition.setText(patientInfo[5]);
                 } else {
                     calloutnhsNumber.setText("");
                 }
@@ -124,7 +128,7 @@ public class GUI extends JFrame {
         }
     }
 
-    //Gets form information and inserts incident into the database table
+    //Gets form information and inserts incident into the database table and updates patient medical condition
     public void IncidentRecord() {
 
         incidents.setNhsNumber(calloutnhsNumber.getText());
@@ -134,7 +138,8 @@ public class GUI extends JFrame {
         incidents.setActionTaken(actionTaken.getText());
         incidents.setCallTime(Integer.parseInt(callTime.getText()));
 
-        if (incidents.recordIncident(incidents)) {
+        if (incidents.recordIncident(incidents) && patients.updateMedCondition(new Patients(patients.getNhsNumber(), "", "",
+                "", "", calloutMedCondition.getText()))) {
             String number = requestList.getSelectedValue().toString().split(" ")[2].trim();
             incidents.removeRequest(Integer.parseInt(number));
             JOptionPane.showMessageDialog(hospitalPane, "Sending callout details to mobile device");
@@ -144,6 +149,7 @@ public class GUI extends JFrame {
             location.setText("");
             actionTaken.setText("");
             callTime.setText("");
+            calloutMedCondition.setText("");
         } else {
             JOptionPane.showMessageDialog(hospitalPane, "Failed to record incident, check form for errors");
         }
@@ -183,6 +189,7 @@ public class GUI extends JFrame {
 
             patients.setNhsNumber(patient.split(" , ")[0]);
             patients.setPostcode(patient.split(" , ")[4]);
+
             confirmPatient.setEnabled(true);
         } else {
             int result = JOptionPane.showConfirmDialog(orginisationPane, "Patient not found, would you like to create new patient record", "Swing Tester",

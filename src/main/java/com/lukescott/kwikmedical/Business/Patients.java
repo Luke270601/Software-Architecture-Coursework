@@ -2,6 +2,7 @@ package com.lukescott.kwikmedical.Business;
 
 import com.lukescott.kwikmedical.Data.InsertDB;
 import com.lukescott.kwikmedical.Data.QueryDB;
+import com.lukescott.kwikmedical.Data.UpdateDB;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ public class Patients {
     //Creates instances of database classes to access their methods
     QueryDB queryDB = new QueryDB();
     InsertDB insertDB = new InsertDB();
+    UpdateDB updateDB = new UpdateDB();
     private String nhsNumber;
     private String firstName;
     private String lastName;
@@ -107,5 +109,10 @@ public class Patients {
         else{
             return false;
         }
+    }
+
+    public boolean updateMedCondition(Patients patient){
+        System.out.println(patient.getNhsNumber());
+        return updateDB.updateMedCondition(patient.getNhsNumber(), patient.getMedCondition());
     }
 }
