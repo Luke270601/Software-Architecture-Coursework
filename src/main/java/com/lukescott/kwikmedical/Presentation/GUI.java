@@ -54,7 +54,6 @@ public class GUI extends JFrame {
         //When button is pressed it records the incident and updates the request list
         confirmCalloutDetailsButton.addActionListener(e -> {
             IncidentRecord();
-            getRequest();
         });
         //Changing to hospital pane adds hospitals to combobox and notes a list is generated to prevent further overlap when called
         paneMenu.addChangeListener(e -> {
@@ -143,6 +142,7 @@ public class GUI extends JFrame {
             String number = requestList.getSelectedValue().toString().split(" ")[2].trim();
             incidents.removeRequest(Integer.parseInt(number));
             JOptionPane.showMessageDialog(hospitalPane, "Sending callout details to mobile device");
+            getRequest();
             calloutnhsNumber.setText("");
             description.setText("");
             time.setText("");
@@ -167,6 +167,11 @@ public class GUI extends JFrame {
             medCondition.setText("");
         } else {
             JOptionPane.showMessageDialog(orginisationPane, "Request already made for patient");
+            patientModel.clear();
+            nhsNumber.setText("");
+            firstLastName.setText("");
+            address.setText("");
+            medCondition.setText("");
         }
     }
 

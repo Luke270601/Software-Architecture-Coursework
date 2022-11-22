@@ -5,10 +5,7 @@ import com.lukescott.kwikmedical.Business.Patients;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class InsertDB {
 
@@ -24,30 +21,30 @@ public class InsertDB {
             // Set up keyboard input
             BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-            // Create a new SQL statement
-            Statement statement = conn.createStatement();
-
             // Build the INSERT statement
             String update = "INSERT INTO `ambulance request` (`Hospital ID`,`NHS Number`) " +
-                    "VALUES ('" + hospitalID + "','" + nhsNumber + "')";
+                    "VALUES ( ? , ? )";
 
+            // Create a new SQL statement
+            PreparedStatement preparedStatement = conn.prepareStatement(update);
+
+            //passes set data to wildcard
+            preparedStatement.setInt(1, hospitalID);
+            preparedStatement.setString(2, nhsNumber);
             // Execute the statement
-            statement.executeUpdate(update);
+            preparedStatement.execute();
             // Release resources held by the statement
-            statement.close();
+            preparedStatement.close();
             // Release resources held by the connection.  This also ensures that the INSERT completes
             conn.close();
-            System.out.println("Sending Request");
         } catch (
                 ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
         } catch (
                 SQLException sqe) {
             System.err.println("Error performing SQL Update");
             System.err.println(sqe.getMessage());
-            System.exit(-1);
         }
     }
 
@@ -62,37 +59,40 @@ public class InsertDB {
             // Set up keyboard input
             BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-            // Create a new SQL statement
-            Statement statement = conn.createStatement();
-
             // Build the INSERT statement
             String update = "INSERT INTO `incident reports` (`NHSNumber`, `Description`, `Time`, `Location`, `Action Taken`, `Call Time`) " +
-                    "VALUES ('" + incidents.getNhsNumber() + "', '" + incidents.getDescription() + "'," +
-                           " '" + incidents.getDateTime() + "', '" + incidents.getLocation() + "', '"
-                                + incidents.getActionTaken() + "', ' " + incidents.getCallTime() + " ')";
+                    "VALUES (? , ? , ? , ? , ? , ?)";
 
+            // Create a new SQL statement
+            PreparedStatement preparedStatement = conn.prepareStatement(update);
+
+            //passes set data to wildcard
+            preparedStatement.setString(1, incidents.getNhsNumber());
+            preparedStatement.setString(2, incidents.getDescription());
+            preparedStatement.setString(3, incidents.getDateTime());
+            preparedStatement.setString(4, incidents.getLocation());
+            preparedStatement.setString(5, incidents.getActionTaken());
+            preparedStatement.setInt(6, incidents.getCallTime());
             // Execute the statement
-            statement.executeUpdate(update);
+            preparedStatement.execute();
             // Release resources held by the statement
-            statement.close();
+            preparedStatement.close();
             // Release resources held by the connection.  This also ensures that the INSERT completes
             conn.close();
-            System.out.println("Recording Saved");
             return true;
         } catch (
                 ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
             return false;
         } catch (
                 SQLException sqe) {
             System.err.println("Error performing SQL Update");
             System.err.println(sqe.getMessage());
-            System.exit(-1);
             return false;
         }
     }
+
     //Uses passed incident object and inserts entry into the Incident table
     public boolean insertPatient(Patients patient) {
         try {
@@ -104,34 +104,36 @@ public class InsertDB {
             // Set up keyboard input
             BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-            // Create a new SQL statement
-            Statement statement = conn.createStatement();
-
             // Build the INSERT statement
             String update = "INSERT INTO `patient records` (`NHSNumber`, `First Name`, `Last Name`, `Address`, `Postcode`, `MedCondition`) " +
-                    "VALUES ('" + patient.getNhsNumber() + "', '" + patient.getFirstName() + "'," +
-                    " '" + patient.getLastName() + "', '" + patient.getAddress() + "', '"
-                    + patient.getPostcode() + "', ' " + patient.getMedCondition() + " ')";
+                    "VALUES (? , ? , ? , ? , ? , ?)";
 
+            // Create a new SQL statement
+            PreparedStatement preparedStatement = conn.prepareStatement(update);
+
+            //passes set data to wildcard
+            preparedStatement.setString(1, patient.getNhsNumber());
+            preparedStatement.setString(2, patient.getFirstName());
+            preparedStatement.setString(3, patient.getLastName());
+            preparedStatement.setString(4, patient.getAddress());
+            preparedStatement.setString(5, patient.getPostcode());
+            preparedStatement.setString(6, patient.getMedCondition());
             // Execute the statement
-            statement.executeUpdate(update);
+            preparedStatement.execute();
             // Release resources held by the statement
-            statement.close();
+            preparedStatement.close();
             // Release resources held by the connection.  This also ensures that the INSERT completes
             conn.close();
-            System.out.println("Recording Saved");
             return true;
         } catch (
                 ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
             return false;
         } catch (
                 SQLException sqe) {
             System.err.println("Error performing SQL Update");
             System.err.println(sqe.getMessage());
-            System.exit(-1);
             return false;
         }
     }

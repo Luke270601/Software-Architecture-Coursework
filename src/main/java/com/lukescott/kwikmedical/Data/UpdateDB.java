@@ -4,10 +4,7 @@ import com.lukescott.kwikmedical.Business.Incidents;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UpdateDB {
 
@@ -27,12 +24,20 @@ public class UpdateDB {
 
             // Build the INSERT statement
             String update = "DELETE FROM `ambulance request`  " +
-                    "WHERE `Request ID` = " + requestID + "";
+                    "WHERE `Request ID` = ?";
+
+            // Create a new SQL statement
+            PreparedStatement preparedStatement = conn.prepareStatement(update);
+
+            //passes set data to wildcard
+            preparedStatement.setInt(1, requestID);
 
             // Execute the statement
-            statement.executeUpdate(update);
+            preparedStatement.execute();
+
             // Release resources held by the statement
-            statement.close();
+            preparedStatement.close();
+
             // Release resources held by the connection.  This also ensures that the INSERT completes
             conn.close();
             return true;
@@ -40,13 +45,11 @@ public class UpdateDB {
                 ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
             return false;
         } catch (
                 SQLException sqe) {
             System.err.println("Error performing SQL Update");
             System.err.println(sqe.getMessage());
-            System.exit(-1);
             return false;
         }
     }
@@ -62,19 +65,23 @@ public class UpdateDB {
             // Set up keyboard input
             BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-            // Create a new SQL statement
-            Statement statement = conn.createStatement();
+
 
             // Build the INSERT statement
-            String update = "UPDATE `patient records` SET `MedCondition` = '" + medCondition +
-                    "' WHERE `patient records`.`NHSNumber` = '" + nhsNumber + "'";
+            String update = "UPDATE `patient records` SET `MedCondition` = ?" +
+                    " WHERE `patient records`.`NHSNumber` = ? ";
 
-            System.out.println(update);
+            // Create a new SQL statement
+            PreparedStatement preparedStatement = conn.prepareStatement(update);
+
+            //passes set data to wildcard
+            preparedStatement.setString(1, medCondition);
+            preparedStatement.setString(2, nhsNumber);
 
             // Execute the statement
-            statement.executeUpdate(update);
+            preparedStatement.execute();
             // Release resources held by the statement
-            statement.close();
+            preparedStatement.close();
             // Release resources held by the connection.  This also ensures that the INSERT completes
             conn.close();
             return true;
@@ -82,13 +89,11 @@ public class UpdateDB {
                 ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
             return false;
         } catch (
                 SQLException sqe) {
             System.err.println("Error performing SQL Update");
             System.err.println(sqe.getMessage());
-            System.exit(-1);
             return false;
         }
     }

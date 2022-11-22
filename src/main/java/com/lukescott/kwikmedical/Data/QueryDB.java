@@ -17,14 +17,19 @@ public class QueryDB {
             // First we need to establish a connection to the database
             Connection conn = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
-            // Next we create a statement to access the database
-            Statement statement = conn.createStatement();
+
 
             // Now create a simple query to get all records from the database
             String query = "SELECT * FROM `patient records` " +
-                    "WHERE `NHSNumber` = '"+ nhsNumber +"'" ;
+                    "WHERE `NHSNumber` =  ?" ;
+
+            // Next we create a statement to access the database
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setString(1, nhsNumber);
+
             // And then get the results from executing the query
-            ResultSet results = statement.executeQuery(query);
+            ResultSet results = preparedStatement.executeQuery();
 
             while (results.next()) {
                 String nhSNumber = results.getString("NHSNumber");
@@ -36,7 +41,7 @@ public class QueryDB {
                 patient = nhSNumber + " , " + firstName + " , " + lastName + " , " + address + " , " + postcode + " , " + Med;
             }
             // Release resources held by statement
-            statement.close();
+            preparedStatement.close();
             // Release resources held by DB connection
             conn.close();
 
@@ -88,11 +93,9 @@ public class QueryDB {
         } catch (ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
         } catch (SQLException sqe) {
             System.out.println("Error performing SQL Query");
             System.out.println(sqe.getMessage());
-            System.exit(-1);
         }
         return patients;
     }
@@ -129,12 +132,10 @@ public class QueryDB {
                 ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
         } catch (
                 SQLException sqe) {
             System.out.println("Error performing SQL Query");
             System.out.println(sqe.getMessage());
-            System.exit(-1);
         }
         return hospitalsList;
     }
@@ -147,13 +148,17 @@ public class QueryDB {
             // First we need to establish a connection to the database
             Connection conn = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
-            // Next we create a statement to access the database
-            Statement statement = conn.createStatement();
+
             // Now create a simple query to get all records from the database
             String query = "SELECT * FROM `ambulance request` " +
-                    "WHERE `Hospital ID` = '" + hospitalID + "'";
+                    "WHERE `Hospital ID` = ?";
+
+            // Next we create a statement to access the database
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setInt(1, hospitalID);
             // And then get the results from executing the query
-            ResultSet results = statement.executeQuery(query);
+            ResultSet results = preparedStatement.executeQuery();
 
             while (results.next()) {
                 int id = (results.getInt("Request ID"));
@@ -163,17 +168,15 @@ public class QueryDB {
                 requests.add(id + " , " + nhsNumber);
             }
             // Release resources held by statement
-            statement.close();
+            preparedStatement.close();
             // Release resources held by DB connection
             conn.close();
         } catch (ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
         } catch (SQLException sqe) {
             System.out.println("Error performing SQL Query");
             System.out.println(sqe.getMessage());
-            System.exit(-1);
         }
         return requests;
     }
@@ -207,11 +210,9 @@ public class QueryDB {
         } catch (ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
             System.err.println(cnf.getMessage());
-            System.exit(-1);
         } catch (SQLException sqe) {
             System.out.println("Error performing SQL Query");
             System.out.println(sqe.getMessage());
-            System.exit(-1);
         }
         return requests;
     }
