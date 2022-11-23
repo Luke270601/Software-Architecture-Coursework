@@ -1,6 +1,6 @@
 package com.lukescott.kwikmedical.Presentation;
 
-import com.lukescott.kwikmedical.Business.Incidents;
+import com.lukescott.kwikmedical.Business.CallOuts;
 import com.lukescott.kwikmedical.Business.Hospitals;
 import com.lukescott.kwikmedical.Business.Patients;
 
@@ -37,7 +37,7 @@ public class GUI extends JFrame {
 
 
     Hospitals hospitals = new Hospitals(0, "", "", "");
-    Incidents incidents = new Incidents("", "", "", "", "", 0);
+    CallOuts callouts = new CallOuts("", "", "", "", "", 0);
     Patients patients = new Patients("", "", "", "", "", "");
     boolean listGenerated = false;
 
@@ -51,32 +51,32 @@ public class GUI extends JFrame {
             confirmPatient.setEnabled(false);
         });
 
-        //When button is pressed it records the incident and updates the request list
+        // When button is pressed it records the callout and updates the request list
         confirmCalloutDetailsButton.addActionListener(e -> {
-            IncidentRecord();
+            CalloutRecord();
         });
-        //Changing to hospital pane adds hospitals to combobox and notes a list is generated to prevent further overlap when called
+        // Changing to hospital pane adds hospitals to combobox and notes a list is generated to prevent further overlap when called
         paneMenu.addChangeListener(e -> {
             if (paneMenu.getSelectedIndex() == 1 && !listGenerated) {
                 HospitalList();
                 listGenerated = true;
             }
         });
-        //When button is pressed the requests list is updated
+        // When button is pressed the requests list is updated
         updateRequests.addActionListener(e -> getRequest());
         //Clears request list when other hospital is selected
         hospitalSelect.addItemListener(e -> {
             requestModel.clear();
             requestList.setModel(requestModel);
         });
-        //When a request is selected it fills the nhs number for the incident form
+        // When a request is selected it fills the nhs number for the callout form
         requestList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (requestList.getSelectedValue() != null) {
                     String number = requestList.getSelectedValue().toString().split(" ")[7].trim();
                     String[] patientInfo = patients.getPatientDetails(number).split(" , ");
-                    String patient = "NHS Number: " + patientInfo[0] + "\nName: " + patientInfo[1] + " " + patientInfo[2]
+                    String patient = "Sending patient details to ambulance\n" + "NHS Number: " + patientInfo[0] + "\nName: " + patientInfo[1] + " " + patientInfo[2]
                             + "\nAddress: " + patientInfo[3] + " , " + patientInfo[4] + "\nMedCondition: " + patientInfo[5];
                     JOptionPane.showMessageDialog(orginisationPane, patient);
                     patients.setNhsNumber(patientInfo[0]);
@@ -100,7 +100,7 @@ public class GUI extends JFrame {
     }
 
 
-    //Gets all hospitals from database and adds them to a combobox
+    // Gets all hospitals from database and adds them to a combobox
     public void HospitalList() {
         List<Hospitals> hospitalsList = hospitals.generateHospitalList();
         hospitalSelect.removeAllItems();
@@ -110,12 +110,12 @@ public class GUI extends JFrame {
         }
     }
 
-    //Uses selected hospital to find requests made populating a list to use for incident records form
+    // Uses selected hospital to find requests made populating a list to use for callout records form
     public void getRequest() {
         requestModel.clear();
         requestList.setModel(requestModel);
         List<Hospitals> hospitalsList = hospitals.generateHospitalList();
-        List<String> list = incidents.createRequestList(hospitalsList.get(hospitalSelect.getSelectedIndex()).getHospitalID());
+        List<String> list = callouts.createRequestList(hospitalsList.get(hospitalSelect.getSelectedIndex()).getHospitalID());
         if (list.size() > 0) {
             for (String s : list) {
                 requestModel.addElement("Request ID: " + s.split(" , ")[0] +
@@ -127,21 +127,21 @@ public class GUI extends JFrame {
         }
     }
 
-    //Gets form information and inserts incident into the database table and updates patient medical condition
-    public void IncidentRecord() {
+    // Gets form information and inserts callout into the database table and updates patient medical condition
+    public void CalloutRecord() {
 
-        incidents.setNhsNumber(calloutnhsNumber.getText());
-        incidents.setDescription(description.getText());
-        incidents.setDateTime(time.getText());
-        incidents.setLocation(location.getText());
-        incidents.setActionTaken(actionTaken.getText());
-        incidents.setCallTime(Integer.parseInt(callTime.getText()));
+        callouts.setNhsNumber(calloutnhsNumber.getText());
+        callouts.setDescription(description.getText());
+        callouts.setDateTime(time.getText());
+        callouts.setLocation(location.getText());
+        callouts.setActionTaken(actionTaken.getText());
+        callouts.setCallTime(Integer.parseInt(callTime.getText()));
 
-        if (incidents.recordIncident(incidents) && patients.updateMedCondition(new Patients(patients.getNhsNumber(), "", "",
+        if (callouts.recordCallOut(callouts) && patients.updateMedCondition(new Patients(patients.getNhsNumber(), "", "",
                 "", "", calloutMedCondition.getText()))) {
             String number = requestList.getSelectedValue().toString().split(" ")[2].trim();
-            incidents.removeRequest(Integer.parseInt(number));
-            JOptionPane.showMessageDialog(hospitalPane, "Sending callout details to mobile device");
+            callouts.removeRequest(Integer.parseInt(number));
+            JOptionPane.showMessageDialog(hospitalPane, "Callout Form Completed");
             getRequest();
             calloutnhsNumber.setText("");
             description.setText("");
@@ -151,13 +151,13 @@ public class GUI extends JFrame {
             callTime.setText("");
             calloutMedCondition.setText("");
         } else {
-            JOptionPane.showMessageDialog(hospitalPane, "Failed to record incident, check form for errors");
+            JOptionPane.showMessageDialog(hospitalPane, "Failed to record Callout, check form for errors");
         }
     }
 
-    //Checks patient details and submits a request for callout
+    // Checks patient details and submits a request for callout
     public void PatientDetails() {
-        if (incidents.requestsExists(patients.getNhsNumber())) {
+        if (callouts.requestsExists(patients.getNhsNumber())) {
             patients.sendRequest(hospitals);
             JOptionPane.showMessageDialog(orginisationPane, "Sending data to " + hospitals.getName());
             patientModel.clear();

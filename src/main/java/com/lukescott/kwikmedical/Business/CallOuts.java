@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Incidents {
+public class CallOuts {
 
     //Creates instances of database classes to access their methods
     QueryDB queryDB = new QueryDB();
@@ -22,7 +22,7 @@ public class Incidents {
     private String actionTaken;
     private int callTime;
 
-    public Incidents(String nhsNumber, String description, String dateTime, String location, String actionTaken, int callTime) {
+    public CallOuts(String nhsNumber, String description, String dateTime, String location, String actionTaken, int callTime) {
         this.nhsNumber = nhsNumber;
         this.description = description;
         this.dateTime = dateTime;
@@ -79,10 +79,6 @@ public class Incidents {
         this.callTime = callTime;
     }
 
-    public boolean addIncident() {
-        return true;
-    }
-
     //Returns list of requests from specified hospital using hospitalID
     public List<String> createRequestList(int hospitalID) {
         ArrayList<String> list = new ArrayList<>();
@@ -90,11 +86,12 @@ public class Incidents {
         return list;
     }
 
-    //Check if a request with matching NHS number already exists
+    //Checks if a request with matching NHS number already exists
     public boolean requestsExists(String nhsNumber){
         int matches = 0;
         ArrayList<String> requests = queryDB.getAllRequests();
 
+        // Loops through all requests to determine whether the input matches
         for (String request: requests) {
             if(Objects.equals(request.split(" , ")[1], nhsNumber)){
                 matches++;
@@ -114,8 +111,8 @@ public class Incidents {
     }
 
 
-    //Returns true when an incident is successfully recorded
-    public boolean recordIncident(Incidents incidents){
-        return insertDB.insertIncidentReport(incidents);
+    //Returns true when an callout is successfully recorded
+    public boolean recordCallOut(CallOuts callouts){
+        return insertDB.insertCallOutReport(callouts);
     }
 }

@@ -9,28 +9,31 @@ import java.util.List;
 
 public class QueryDB {
 
-    //Returns a string containing patient details of a patient record matching the nhs number
+    // Returns a string containing patient details of a patient record matching the nhs number
     public String queryPatientRecords(String nhsNumber, String patient) {
         try {
-            // Load the driver
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // First we need to establish a connection to the database
+
+            // Connects to DB
             Connection conn = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
 
 
-            // Now create a simple query to get all records from the database
+            // SQL statement to query database and retrieve information
             String query = "SELECT * FROM `patient records` " +
                     "WHERE `NHSNumber` =  ?" ;
 
-            // Next we create a statement to access the database
+            // Prepare statement to have values set to wild card character
             PreparedStatement preparedStatement = conn.prepareStatement(query);
 
+            // Data to be passed to prepared statement for query
             preparedStatement.setString(1, nhsNumber);
 
-            // And then get the results from executing the query
+            // Gets the results of a query
             ResultSet results = preparedStatement.executeQuery();
 
+            // Loops through all retrieved data to produce a convert a patient record into a string
             while (results.next()) {
                 String nhSNumber = results.getString("NHSNumber");
                 String firstName = results.getString("First Name");
@@ -55,25 +58,30 @@ public class QueryDB {
             System.out.println(sqe.getMessage());
             System.exit(-1);
         }
+        // Created patient string is returned to call location
         return patient;
     }
 
+
+    // Creates list of every patient that exists to compare to inputted patient in related method
     public ArrayList<Patients> getAllPatients() {
         ArrayList<Patients> patients = new ArrayList<>();
         try {
-            // Load the driver
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // First we need to establish a connection to the database
+
             Connection conn = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
-            // Next we create a statement to access the database
+
+            // A non prepared statement as no values are passed
             Statement statement = conn.createStatement();
 
-            // Now create a simple query to get all records from the database
             String query = "SELECT * FROM `patient records` ";
-            // And then get the results from executing the query
+
+            // Queries the database to obtain all availiable data for patient records
             ResultSet results = statement.executeQuery(query);
 
+            //Generates list of Patients objects
             while (results.next()) {
                 String nhsNumber = results.getString("NHSNumber");
                 String firstName = results.getString("First Name");
@@ -84,9 +92,9 @@ public class QueryDB {
                 Patients patient = new Patients(nhsNumber, firstName, lastName, address, postcode, Med);
                 patients.add(patient);
             }
-            // Release resources held by statement
+
             statement.close();
-            // Release resources held by DB connection
+
             conn.close();
 
 
@@ -101,20 +109,21 @@ public class QueryDB {
     }
 
 
-    //Queries the hospital table and adds the to a list of hospitals instances and returns the list
+    // Generates a list of the hospital based of data retrieved from the database
     public List<Hospitals> getHospitals(List<Hospitals> hospitalsList) {
         try {
-            // Load the driver
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // First we need to establish a connection to the database
+
             Connection conn = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
-            // Next we create a statement to access the database
+
             Statement statement = conn.createStatement();
-            // Now create a simple query to get all records from the database
+
             String query = "SELECT * FROM `regional hospitals` " +
                     "ORDER BY Postcode";
-            // And then get the results from executing the query
+
+            // Creates list of Hospitals object
             ResultSet results = statement.executeQuery(query);
             while (results.next()) {
                 int hospitalID = (results.getInt("Hospital ID"));
@@ -124,9 +133,9 @@ public class QueryDB {
                 Hospitals hospital = new Hospitals(hospitalID, name, address, postcode);
                 hospitalsList.add(hospital);
             }
-            // Release resources held by statement
+
             statement.close();
-            // Release resources held by DB connection
+
             conn.close();
         } catch (
                 ClassNotFoundException cnf) {
@@ -140,26 +149,27 @@ public class QueryDB {
         return hospitalsList;
     }
 
-    //Gets requests which have a hospital id matching the passed parameter and returns an array list of strings
+    // Generates a list of requests which have a hospital id matching the hospitalID
     public ArrayList<String> getHospitalRequests(ArrayList<String> requests, int hospitalID) {
         try {
-            // Load the driver
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // First we need to establish a connection to the database
+
             Connection conn = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
 
-            // Now create a simple query to get all records from the database
+
             String query = "SELECT * FROM `ambulance request` " +
                     "WHERE `Hospital ID` = ?";
 
-            // Next we create a statement to access the database
+
             PreparedStatement preparedStatement = conn.prepareStatement(query);
 
             preparedStatement.setInt(1, hospitalID);
-            // And then get the results from executing the query
+
             ResultSet results = preparedStatement.executeQuery();
 
+            // Adds request to a list that match the hospital ID
             while (results.next()) {
                 int id = (results.getInt("Request ID"));
                 String nhsNumber = results.getString("NHS Number");
@@ -167,9 +177,9 @@ public class QueryDB {
 
                 requests.add(id + " , " + nhsNumber);
             }
-            // Release resources held by statement
+
             preparedStatement.close();
-            // Release resources held by DB connection
+
             conn.close();
         } catch (ClassNotFoundException cnf) {
             System.err.println("Could not load driver");
@@ -181,21 +191,23 @@ public class QueryDB {
         return requests;
     }
 
+    // Generates a list of all recorded requests to use in a related method
     public ArrayList<String> getAllRequests() {
         ArrayList<String> requests = new ArrayList<>();
         try {
-            // Load the driver
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // First we need to establish a connection to the database
+
             Connection conn = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
-            // Next we create a statement to access the database
+
             Statement statement = conn.createStatement();
-            // Now create a simple query to get all records from the database
+
             String query = "SELECT * FROM `ambulance request` ";
-            // And then get the results from executing the query
+
             ResultSet results = statement.executeQuery(query);
 
+            // Generates a list of all requests
             while (results.next()) {
                 int id = (results.getInt("Request ID"));
                 String nhsNumber = results.getString("NHS Number");
@@ -203,9 +215,9 @@ public class QueryDB {
 
                 requests.add(id + " , " + nhsNumber);
             }
-            // Release resources held by statement
+
             statement.close();
-            // Release resources held by DB connection
+
             conn.close();
         } catch (ClassNotFoundException cnf) {
             System.err.println("Could not load driver");

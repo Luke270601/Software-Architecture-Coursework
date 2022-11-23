@@ -62,11 +62,13 @@ public class Hospitals {
         queryDB.getHospitals(hospitalsList);
         int randomNo = 0;
 
+        // Chooses whether to use random number based off of isHospital
         Random random = new Random();
         if(!isHospital) {
            randomNo = random.nextInt(1, (hospitalsList.size()-1));
         }
         else {
+            // Uses select from list to determine which hospital is selected
             randomNo = selection-1;
         }
         hospital.setHospitalID(hospitalsList.get(randomNo).hospitalID);

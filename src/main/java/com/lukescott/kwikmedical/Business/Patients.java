@@ -90,9 +90,12 @@ public class Patients {
         return patient;
     }
 
+    // Determines if patient details already exist and adds them the database if they dont
     public boolean addPatient(Patients patient) {
         ArrayList<Patients> patients = queryDB.getAllPatients();
         int matches = 0;
+
+        // Checks input to existing patient to find a match
         for (Patients patientInfo : patients) {
             if(patientInfo.getNhsNumber().equals(patient.getNhsNumber())){
                 matches++;
@@ -111,6 +114,7 @@ public class Patients {
         }
     }
 
+    // Update the medical condition of a patient after callout form is complete
     public boolean updateMedCondition(Patients patient){
         System.out.println(patient.getNhsNumber());
         return updateDB.updateMedCondition(patient.getNhsNumber(), patient.getMedCondition());
