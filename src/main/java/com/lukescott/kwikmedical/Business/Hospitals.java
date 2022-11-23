@@ -5,7 +5,12 @@ import com.lukescott.kwikmedical.Data.QueryDB;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+/*
+Author: Luke Scott
+Data Last Edited: 23/11/2022
+Class Summary: Handle instances of hospital data as well as generating
+a list of all hospital and on selecting a singular hospital
+ */
 public class Hospitals {
 
     //Creates instances of database classes to access their methods

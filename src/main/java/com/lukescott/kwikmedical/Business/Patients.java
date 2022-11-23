@@ -5,7 +5,13 @@ import com.lukescott.kwikmedical.Data.QueryDB;
 import com.lukescott.kwikmedical.Data.UpdateDB;
 
 import java.util.ArrayList;
-
+/*
+Author: Luke Scott
+Data Last Edited: 23/11/2022
+Class Summary: Handles instances of patients as
+well as retrieving, adding or updating elements
+of a patient record
+ */
 public class Patients {
 
     //Creates instances of database classes to access their methods

@@ -1,7 +1,13 @@
 package com.lukescott.kwikmedical.Data;
 
 import java.sql.*;
-
+/*
+Author: Luke Scott
+Data Last Edited: 23/11/2022
+Class Summary: Handles updates to the database
+such as removing completed requests or updating
+patients' medical condition
+ */
 public class UpdateDB {
 
     //Removes request from the specified ID updating the database

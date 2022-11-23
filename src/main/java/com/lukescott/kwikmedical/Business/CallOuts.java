@@ -8,7 +8,13 @@ import com.lukescott.kwikmedical.Data.UpdateDB;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/*
+Author: Luke Scott
+Data Last Edited: 23/11/2022
+Class Summary: Handles instances of callout reports
+by adding them to the database as well as removing request
+of completed callout forms
+ */
 public class CallOuts {
 
     //Creates instances of database classes to access their methods

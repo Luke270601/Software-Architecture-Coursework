@@ -6,7 +6,12 @@ import com.lukescott.kwikmedical.Business.Patients;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.*;
-
+/*
+Author: Luke Scott
+Data Last Edited: 23/11/2022
+Class Summary: Handles all inserts into the database
+such as ambulance requests and completed callout forms
+ */
 public class InsertDB {
 
 

@@ -6,7 +6,13 @@ import com.lukescott.kwikmedical.Business.Patients;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+Author: Luke Scott
+Data Last Edited: 23/11/2022
+Class Summary: Handles queries for the database
+such as collecting patient records or requests for
+specific hospitals
+ */
 public class QueryDB {
 
     // Returns a string containing patient details of a patient record matching the nhs number

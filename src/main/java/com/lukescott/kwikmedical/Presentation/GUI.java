@@ -8,7 +8,14 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.util.List;
-
+/*
+Author: Luke Scott
+Data Last Edited: 23/11/2022
+Class Summary: Presents the gui elements
+from the related form, handling input for
+organisation callers as well as simulating callout
+form input on a mobile device
+ */
 public class GUI extends JFrame {
     private JPanel mainMenu;
     private JTabbedPane paneMenu;
