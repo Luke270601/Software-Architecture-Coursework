@@ -7,14 +7,14 @@ import com.lukescott.kwikmedical.Data.UpdateDB;
 import java.util.ArrayList;
 /*
 Author: Luke Scott
-Data Last Edited: 23/11/2022
+Data Last Edited: 24/11/2022
 Class Summary: Handles instances of patients as
 well as retrieving, adding or updating elements
 of a patient record
  */
 public class Patients {
 
-    //Creates instances of database classes to access their methods
+    // Creates instances of database classes to access their methods
     QueryDB queryDB = new QueryDB();
     InsertDB insertDB = new InsertDB();
     UpdateDB updateDB = new UpdateDB();
@@ -83,13 +83,13 @@ public class Patients {
     }
 
 
-    //Returns true when an ambulance request is successfully inserted into the database
+    // Returns true when an ambulance request is successfully inserted into the database
     public void sendRequest(Hospitals hospital) {
         hospital.getHospital(hospital, false, 0);
         insertDB.insertAmbulanceRequest(hospital.getHospitalID(), getNhsNumber());
     }
 
-    //Returns a string containing patient details using the passed nhs number
+    // Returns a string containing patient details using the passed nhs number
     public String getPatientDetails(String nhsNumber) {
         String patient = "";
         patient = queryDB.queryPatientRecords(nhsNumber, patient);
@@ -122,7 +122,6 @@ public class Patients {
 
     // Update the medical condition of a patient after callout form is complete
     public boolean updateMedCondition(Patients patient){
-        System.out.println(patient.getNhsNumber());
         return updateDB.updateMedCondition(patient.getNhsNumber(), patient.getMedCondition());
     }
 }

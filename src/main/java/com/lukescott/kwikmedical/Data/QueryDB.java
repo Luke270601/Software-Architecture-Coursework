@@ -1,14 +1,16 @@
 package com.lukescott.kwikmedical.Data;
 
+import com.lukescott.kwikmedical.Business.CallOuts;
 import com.lukescott.kwikmedical.Business.Hospitals;
 import com.lukescott.kwikmedical.Business.Patients;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 /*
 Author: Luke Scott
-Data Last Edited: 23/11/2022
+Data Last Edited: 24/11/2022
 Class Summary: Handles queries for the database
 such as collecting patient records or requests for
 specific hospitals
@@ -28,7 +30,7 @@ public class QueryDB {
 
             // SQL statement to query database and retrieve information
             String query = "SELECT * FROM `patient records` " +
-                    "WHERE `NHSNumber` =  ?" ;
+                    "WHERE `NHSNumber` =  ?";
 
             // Prepare statement to have values set to wild card character
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -234,4 +236,91 @@ public class QueryDB {
         }
         return requests;
     }
+
+    // Gets callout information for selected callout report
+    public CallOuts getCalloutReport(int calloutID) {
+        CallOuts callOut = new CallOuts(0,0,"","","","","", 0);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection conn = DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
+
+            Statement statement = conn.createStatement();
+
+            String query = "SELECT * FROM `callout reports` ";
+
+            ResultSet results = statement.executeQuery(query);
+
+            // Generates a list of all requests
+
+            while (results.next()) {
+                callOut.setHospitalID(results.getInt("Hospital ID"));
+                callOut.setNhsNumber(results.getString("NHSNumber"));
+                callOut.setDescription(results.getString("Description"));
+                callOut.setDateTime(results.getString("Time"));
+                callOut.setLocation(results.getString("Location"));
+                callOut.setActionTaken(results.getString("Action Taken"));
+                callOut.setCallTime(results.getInt("Call Time"));
+            }
+
+
+            statement.close();
+
+            conn.close();
+        } catch (ClassNotFoundException cnf) {
+            System.err.println("Could not load driver");
+            System.err.println(cnf.getMessage());
+        } catch (SQLException sqe) {
+            System.out.println("Error performing SQL Query");
+            System.out.println(sqe.getMessage());
+        }
+        return callOut;
+    }
+
+    // Creates a list of callout reports for selected hospital
+    public ArrayList<CallOuts> getCallOutReports(int hospitalID) {
+        ArrayList<CallOuts> callOuts = new ArrayList<>();
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection conn = DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
+
+            String query = "SELECT * FROM `callout reports` WHERE `Hospital ID` = ?";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement.setInt(1, hospitalID);
+
+            ResultSet results = preparedStatement.executeQuery();
+
+            // Generates a list of all requests
+            while (results.next()) {
+                int requestID = results.getInt("Callout ID");
+                int hospital = results.getInt("Hospital ID");
+                String nhsNumber = results.getString("NHSNumber");
+                String description = results.getString("Description");
+                String time = results.getString("Time");
+                String location = results.getString("Location");
+                String actionTaken = results.getString("Action Taken");
+                int callTime = results.getInt("Call Time");
+                CallOuts callOut = new CallOuts(requestID, hospital, nhsNumber, description, time, location, actionTaken, callTime);
+                callOuts.add(callOut);
+            }
+
+            preparedStatement.close();
+
+            conn.close();
+        } catch (ClassNotFoundException cnf) {
+            System.err.println("Could not load driver");
+            System.err.println(cnf.getMessage());
+        } catch (SQLException sqe) {
+            System.out.println("Error performing SQL Query");
+            System.out.println(sqe.getMessage());
+        }
+        return callOuts;
+    }
+
 }

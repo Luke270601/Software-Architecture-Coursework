@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.sql.*;
 /*
 Author: Luke Scott
-Data Last Edited: 23/11/2022
+Data Last Edited: 24/11/2022
 Class Summary: Handles all inserts into the database
 such as ambulance requests and completed callout forms
  */
@@ -65,17 +65,18 @@ public class InsertDB {
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
 
             // Build the INSERT statement
-            String update = "INSERT INTO `callout reports` (`NHSNumber`, `Description`, `Time`, `Location`, `Action Taken`, `Call Time`) " +
-                    "VALUES (? , ? , ? , ? , ? , ?)";
+            String update = "INSERT INTO `callout reports` (`Hospital ID`, `NHSNumber`, `Description`, `Time`, `Location`, `Action Taken`, `Call Time`) " +
+                    "VALUES (? , ? , ? , ? , ? , ?, ?)";
 
             PreparedStatement preparedStatement = conn.prepareStatement(update);
 
-            preparedStatement.setString(1, callouts.getNhsNumber());
-            preparedStatement.setString(2, callouts.getDescription());
-            preparedStatement.setString(3, callouts.getDateTime());
-            preparedStatement.setString(4, callouts.getLocation());
-            preparedStatement.setString(5, callouts.getActionTaken());
-            preparedStatement.setInt(6, callouts.getCallTime());
+            preparedStatement.setInt(1, callouts.getHospitalID());
+            preparedStatement.setString(2, callouts.getNhsNumber());
+            preparedStatement.setString(3, callouts.getDescription());
+            preparedStatement.setString(4, callouts.getDateTime());
+            preparedStatement.setString(5, callouts.getLocation());
+            preparedStatement.setString(6, callouts.getActionTaken());
+            preparedStatement.setInt(7, callouts.getCallTime());
 
             preparedStatement.execute();
 

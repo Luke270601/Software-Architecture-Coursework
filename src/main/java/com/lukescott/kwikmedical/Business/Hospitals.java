@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Random;
 /*
 Author: Luke Scott
-Data Last Edited: 23/11/2022
+Data Last Edited: 24/11/2022
 Class Summary: Handle instances of hospital data as well as generating
 a list of all hospital and on selecting a singular hospital
  */
 public class Hospitals {
 
-    //Creates instances of database classes to access their methods
+    // Creates instances of database classes to access their methods
     QueryDB queryDB = new QueryDB();
 
     private int hospitalID;
@@ -60,8 +60,8 @@ public class Hospitals {
 
     public void setPostcode(String postcode) { this.postcode = postcode; }
 
-    //returns randomly selected hospital whne requesting ambulance service but uses the selected hospital when generating requests
-    //for the selected hospital
+    // Returns randomly selected hospital whne requesting ambulance service but uses the selected hospital when generating requests
+    // for the selected hospital
     public Hospitals getHospital(Hospitals hospital, boolean isHospital, int selection) {
         hospitalsList.clear();
         queryDB.getHospitals(hospitalsList);
@@ -83,7 +83,7 @@ public class Hospitals {
         return hospital;
     }
 
-    //Generates list of hospitals and returns list of hospitals objects
+    // Generates list of hospitals and returns list of hospitals objects
     public List<Hospitals> generateHospitalList(){
         hospitalsList.clear();
         queryDB.getHospitals(hospitalsList);

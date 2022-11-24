@@ -7,13 +7,10 @@ import java.util.List;
 
 class CallOutsTest {
 
-    @Test
-    void addIncident() {
-    }
 
     @Test
     void createRequestList() {
-        CallOuts callouts = new CallOuts("","","","","",0);
+        CallOuts callouts = new CallOuts(0,0,"","","","","",0);
         Hospitals hospitals = new Hospitals(9872,"","","");
         String nhsNumber = "7276349012";
         List<String> list = callouts.createRequestList(hospitals.getHospitalID());
@@ -26,6 +23,6 @@ class CallOutsTest {
     }
 
     @Test
-    void recordIncident() {
+    void recordCallout() {
     }
 }
