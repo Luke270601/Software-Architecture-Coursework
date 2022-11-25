@@ -20,8 +20,8 @@ class HospitalsTest {
     void generateHospitalList() {
         Hospitals hospitals = new Hospitals(0,"","","");
         List<Hospitals> hospitalsList = hospitals.generateHospitalList();
-        String hospitalName = "Mura Foundation";
+        String hospitalName = "Franks Hospital";
 
-        Assertions.assertEquals(hospitalName, hospitalsList.get(4).getName());
+        Assertions.assertEquals(hospitalName, hospitalsList.get(0).getName());
     }
 }
