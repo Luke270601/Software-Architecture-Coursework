@@ -65,7 +65,7 @@ public class InsertDB {
                     .getConnection("jdbc:mysql://localhost:3306/kwikmedical?user=root&password=");
 
             // Build the INSERT statement
-            String update = "INSERT INTO `callout reports` (`Hospital ID`, `NHSNumber`, `Description`, `Time`, `Location`, `Action Taken`, `Call Time`) " +
+            String update = "INSERT INTO `callout reports` (`Hospital ID`, `NHSNumber`, `Description`, `Date/Time`, `Location`, `Action Taken`, `Call Time`) " +
                     "VALUES (? , ? , ? , ? , ? , ?, ?)";
 
             PreparedStatement preparedStatement = conn.prepareStatement(update);

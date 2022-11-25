@@ -7,8 +7,6 @@ import com.lukescott.kwikmedical.Business.Patients;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class GUI extends JFrame {
     private JButton searchPatients;
     private JTextField nhsNumber;
     private JComboBox hospitalSelect;
-    private JTextField time;
+    private JTextField dateTime;
     private JTextField calloutnhsNumber;
     private JTextField actionTaken;
     private JTextField callTime;
@@ -113,12 +111,9 @@ public class GUI extends JFrame {
                     CallOutList();
                 }
         );
-        calloutReports.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (calloutReports.getSelectedValue() != null) {
-                    CalloutInfo(Integer.parseInt(calloutReports.getSelectedValue().toString().split(" ")[2]));
-                }
+        calloutReports.addListSelectionListener(e -> {
+            if (calloutReports.getSelectedValue() != null) {
+                CalloutInfo(Integer.parseInt(calloutReports.getSelectedValue().toString().split(" ")[2]));
             }
         });
     }
@@ -163,7 +158,7 @@ public class GUI extends JFrame {
     public void CalloutInfo(int calloutID) {
         CallOuts callout = callouts.getCalloutInfo(calloutID);
         JOptionPane.showMessageDialog(hospitalPane, "Callout Information\n" + "NHS Number: " + callout.getNhsNumber() + "\nDescription: " + callout.getDescription()
-                + "\nDate/Time: " + callout.getDateTime() + "\nLocation: " + callout.getLocation() + "\nAction Taken: " + callout.getActionTaken() + "\nCall Time: " + callout.getCallTime());
+                + "\nDate/Time: " + callout.getDateTime() + "\nLocation: " + callout.getLocation() + "\nAction Taken: " + callout.getActionTaken() + "\nCall Time (minutes): " + callout.getCallTime());
     }
 
     // Uses selected hospital to find requests made populating a list to use for callout records form
@@ -188,8 +183,9 @@ public class GUI extends JFrame {
     public void CalloutRecord() {
 
         callouts.setNhsNumber(calloutnhsNumber.getText());
+        callouts.setHospitalID((hospitalsList.get(hospitalSelect.getSelectedIndex()).getHospitalID()));
         callouts.setDescription(description.getText());
-        callouts.setDateTime(time.getText());
+        callouts.setDateTime(dateTime.getText());
         callouts.setLocation(location.getText());
         callouts.setActionTaken(actionTaken.getText());
         callouts.setCallTime(Integer.parseInt(callTime.getText()));
@@ -202,7 +198,7 @@ public class GUI extends JFrame {
             getRequest();
             calloutnhsNumber.setText("");
             description.setText("");
-            time.setText("");
+            dateTime.setText("");
             location.setText("");
             actionTaken.setText("");
             callTime.setText("");

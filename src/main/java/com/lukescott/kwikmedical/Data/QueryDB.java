@@ -258,7 +258,7 @@ public class QueryDB {
                 callOut.setHospitalID(results.getInt("Hospital ID"));
                 callOut.setNhsNumber(results.getString("NHSNumber"));
                 callOut.setDescription(results.getString("Description"));
-                callOut.setDateTime(results.getString("Time"));
+                callOut.setDateTime(results.getString("Date/Time"));
                 callOut.setLocation(results.getString("Location"));
                 callOut.setActionTaken(results.getString("Action Taken"));
                 callOut.setCallTime(results.getInt("Call Time"));
@@ -302,11 +302,11 @@ public class QueryDB {
                 int hospital = results.getInt("Hospital ID");
                 String nhsNumber = results.getString("NHSNumber");
                 String description = results.getString("Description");
-                String time = results.getString("Time");
+                String dateTime = results.getString("Date/Time");
                 String location = results.getString("Location");
                 String actionTaken = results.getString("Action Taken");
                 int callTime = results.getInt("Call Time");
-                CallOuts callOut = new CallOuts(requestID, hospital, nhsNumber, description, time, location, actionTaken, callTime);
+                CallOuts callOut = new CallOuts(requestID, hospital, nhsNumber, description, dateTime, location, actionTaken, callTime);
                 callOuts.add(callOut);
             }
 
